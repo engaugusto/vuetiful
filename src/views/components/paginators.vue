@@ -10,7 +10,7 @@
             </div>
             <div class="grid-row" layout="row top-stretch">
                 <div class="grid-cell">
-                    <paginator :source="customers.rows" :page-size="4" :filter="customers.filter">
+                    <paginator :source="customers.rows" :page-size="3" :filter="customers.filter">
                         <template scope="page">
                             <datatable id="data-table-main" :source="page.data" :striped="customers.striped" :editable="customers.editable" :line-numbers="customers.lineNumbers">
                                 <datatable-column id="sel" label="sel" width="3.25rem" :sortable="false" :groupable="false" class="checkable-column">

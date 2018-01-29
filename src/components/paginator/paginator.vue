@@ -4,17 +4,26 @@
             <slot :data="data" :page-number="pageNumber"></slot>
         </div>
         <div class="paginator-footer" layout="row center-justify">
-            <div class="paginator-button paginator-page-previous" @click="movePrevious">
-                <span>Prev</span>
-            </div>
             <div class="paginator-page-numbers">
-                <div class="paginator-button paginator-page-number" :class="{ 'active': num === pageNumber }" v-for="num in pages.length" @click="moveTo(num)">
+                <div class="paginator-button paginator-page-first" v-if="showFirst()" @click="moveTo(1)">
+                    <span>&lt;&lt;</span>
+                </div>
+                <div class="paginator-button paginator-page-previous" v-if="showPrevious()" @click="movePrevious">
+                    <span>&lt;</span>
+                </div>
+                <div v-bind:key="num" class="paginator-button paginator-page-number" :class="{ 'active': num === pageNumber }" v-for="num in pages.length" @click="moveTo(num)" >
                     <span>{{ num }}</span>
                 </div>
+                <div class="paginator-button paginator-page-next" v-if="showNext()" @click="moveNext">
+                    <span>&gt;</span>
+                </div>
+                <div class="paginator-button paginator-page-last" v-if="showLast()"  @click="moveTo(pages.length)">
+                    <span>&gt;&gt;</span>
+                </div>
             </div>
-            <div class="paginator-button paginator-page-next" @click="moveNext">
-                <span>Next</span>
-            </div>
+            <div class="size" v-if="pages.length > 0">
+                {{(pageNumber-1)*pageSize+1}} até {{ lastRegister }} do total de {{source.length}}
+            </div>            
         </div>
     </div>
 </template>
@@ -79,6 +88,14 @@
                 }
             },
 
+            //added to get the beggining of the registers
+            lastRegister: {
+                get(){
+                    if(this.index==this.pages.length-1)return ((this.index)*this.pageSize)+(this.data.length%this.pageSize);
+                    return ((this.index+1)*this.pageSize);
+                }
+            },
+
             data() {
                 return this.pages[this.index];
             }
@@ -86,11 +103,23 @@
         },
 
         methods: {
+            showFirst(){
+                return this.pageNumber > 1;
+            },
+            showPrevious(){
+                return this.pageNumber > 1;
+            },
+
+            showNext() {
+                return this.pageNumber < this.pages.length;
+            },
+            showLast() {
+                 return this.pageNumber < this.pages.length;
+            },
 
             movePrevious() {
                 this.pageNumber -= this.pageNumber > 1 ? 1 : 0;
             },
-
             moveNext() {
                 this.pageNumber += (this.pageNumber != this.pages.length) ? 1 : 0;
             },

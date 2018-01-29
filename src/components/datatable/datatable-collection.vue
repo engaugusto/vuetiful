@@ -104,7 +104,7 @@
 
             message: {
                 type: String,
-                default: "No results",
+                default: "Sem resultados",
                 required: false
             }
 
